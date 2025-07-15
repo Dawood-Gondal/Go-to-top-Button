@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+        <tab id="bugsbunny" translate="label" sortOrder="1000">
+            <label>Bugs Bunny</label>
+        </tab>
+		<section id="gototopbutton" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+			<class>separator-top</class>
+			<label>Go To Top Button</label>
+            <tab>bugsbunny</tab>
+			<resource>BugsBunny_Warning::config</resource>
+			<group id="general" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>General</label>
+				<field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Active</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="image" translate="label" type="image" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Image</label>
+					<backend_model>BugsBunny\GoToTopButton\Model\Config\Backend\Image</backend_model>
+					<upload_dir config="system" scope_info="1">media/gototopbutton</upload_dir>
+					<base_url type="web" scope_info="1">media/gototopbutton</base_url>
+					<comment>Allowed extension: jpg, jpeg, gif, png</comment>
+				</field>
+				<field id="offset" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Offset</label>
+					<validate>required-number validate-number validate-not-negative-number</validate>
+					<comment>Scroll offset from top when button should be showed. In px.</comment>
+				</field>
+                <!--
+				<field id="css" translate="label" type="textarea" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>CSS</label>
+				</field>
+				-->
+			</group>
+		</section>
+	</system>
+</config>

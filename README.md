@@ -30,12 +30,16 @@ Stores > Configuration > BugsBunny > Go To Top Button.
 # Installation
 You can download code from this repo under Magento® 2 following directory:
 
-app/code/BugsBunny/GoToTopButton
+```
+app/code/BugsBunny/GoToTopButton 
+```
 Enter following commands to enable the module:
 
+```
 php bin/magento module:enable BugsBunny_GoToTopButton
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile
 php bin/magento setup:static-content:deploy -f
 php bin/magento cache:clean
 php bin/magento cache:flush
+```

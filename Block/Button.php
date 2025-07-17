@@ -1,44 +1,89 @@
 <?php
+declare(strict_types=1);
+
+/**
+ * @category    BugsBunny Enterprise
+ * @package     BugsBunny_OrderComment
+ * @copyright   Copyright (c) 2023 BugsBunny Enterprise
+ * @author      dawoodgondaldev@gmail.com
+ */
+
 namespace BugsBunny\GoToTopButton\Block;
 
-class Button extends \Magento\Framework\View\Element\Template
-{
-    protected $helper;
+use BugsBunny\GoToTopButton\Helper\Data;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Filesystem\DirectoryList;
+use Magento\Framework\View\Asset\Repository;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
 
-    protected $directoryList;
+class Button extends Template
+{
+    /**
+     * @var Data
+     */
+    protected Data $helper;
+    /** @var DirectoryList */
+
+    protected DirectoryList $directoryList;
+    /** @var StoreManagerInterface */
 
     protected $_storeManager;
+    /** @var Repository */
 
-    protected $_assetRepository;
+    protected Repository $_assetRepository;
 
-    public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \BugsBunny\GoToTopButton\Helper\Data $helper,
-        \Magento\Framework\Filesystem\DirectoryList $directoryList,
-        array $data = []
-    ) {
+    /**
+     * @param Context $context
+     * @param Data $helper
+     * @param DirectoryList $directoryList
+     * @param array $data
+     */
+    public function __construct(Context $context, Data $helper, DirectoryList $directoryList, array $data = [])
+    {
         $this->helper = $helper;
         $this->directoryList = $directoryList;
         $this->_storeManager = $context->getStoreManager();
         $this->_assetRepository = $context->getAssetRepository();
         parent::__construct($context, $data);
     }
+
+    /**
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isActive(): bool
+    {
+        return ($this->getConfig('general/active') == "1");
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
     public function getConfig($key)
     {
         return $this->helper->getConfigValue($key, $this->_storeManager->getStore()->getId());
     }
-    public function isActive()
+
+    /**
+     * @return false|string
+     * @throws NoSuchEntityException
+     */
+    public function getConfigJson(): false|string
     {
-        return ($this->getConfig('general/active') == "1");
-    }
-    public function getConfigJson()
-    {
-        $array = [
-            'scrollTop' => $this->getConfig('general/offset')
-        ];
+        $array = ['scrollTop' => $this->getConfig('general/offset')];
         return json_encode($array);
     }
-    public function getImageUrl()
+
+    /**
+     * @return string
+     * @throws LocalizedException
+     */
+    public function getImageUrl(): string
     {
         if ($imageUrl = $this->helper->getImageUrl()) {
             $path = rtrim($this->directoryList->getRoot(), '/') . '/' . $imageUrl;
@@ -46,9 +91,6 @@ class Button extends \Magento\Framework\View\Element\Template
                 return rtrim($this->getBaseUrl(), '/') . '/' . $imageUrl;
             }
         }
-        return $this->_assetRepository->createAsset(
-            'BugsBunny_GoToTopButton::images/hehe.png',
-            ['area' => 'frontend']
-        )->getUrl();
+        return $this->_assetRepository->createAsset('BugsBunny_GoToTopButton::images/hehe.png', ['area' => 'frontend'])->getUrl();
     }
 }

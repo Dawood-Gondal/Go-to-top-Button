@@ -1,5 +1,7 @@
-<?php if($this->isActive()): ?>
-	<a href="javascript:void(0)" class="gototopbutton" data-mage-init='{"BugsBunny_GoToTopButton/js/button":<?php echo $this->getConfigJson(); ?>}' style="display:none">
+<?php if ($this->isActive()): ?>
+    <a href="javascript:void(0)" class="gototopbutton"
+       data-mage-init='{"BugsBunny_GoToTopButton/js/button":<?php echo $this->getConfigJson(); ?>}'
+       style="display:none">
         <img src="<?php echo $this->getImageUrl(); ?>">
     </a>
 <?php endif; ?>
